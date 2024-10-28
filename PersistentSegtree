@@ -1,0 +1,43 @@
+struct Node {
+	ll val;
+	Node *l, *r;
+  ll mpval;
+ 
+	Node(ll x) : val(x), l(nullptr), r(nullptr) {}
+	Node(Node *ll, Node *rr) {
+		l = ll, r = rr;
+		val = 0;
+		if (l) val += l->val;
+		if (r) val += r->val;
+	}
+	Node(Node *cp) : val(cp->val), l(cp->l), r(cp->r) {}
+};
+ 
+ll a[200001];
+int par[N];
+Node *roots[200001];
+vector<vector<int>>adj(N);
+ 
+Node *build(int l, int r) {
+	if (l == r)return new Node(0LL);
+	int mid = (l + r) / 2;
+	return new Node(build(l, mid), build(mid + 1, r));
+}
+ 
+Node *update(Node *node, int val, int pos, int l, int r) {
+	if (l == r){
+    return new Node(val+node->val);
+  }
+	int mid = (l + r) / 2;
+	if (pos > mid)
+		return new Node(node->l, update(node->r, val, pos, mid + 1, r));
+	else return new Node(update(node->l, val, pos, l, mid), node->r);
+}
+ 
+ll query(Node *node1, Node *node2, Node *node3, Node *node4, int l, int r, int k) {
+	if(l==r)return l;
+  int mid = (l+r)/2;
+  int cnt = (node1->l)->val + (node2->l)->val - (node3->l)->val- (node4->l)->val ;
+  if(cnt>=k)return query(node1->l, node2->l, node3->l, node4->l, l, mid, k);
+  else return query(node1->r, node2->r, node3->r, node4->r, mid+1, r, k-cnt);
+}
