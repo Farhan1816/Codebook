@@ -1,0 +1,21 @@
+struct FenwickTree {
+  int f[N];
+
+  void clear() {
+    memset(f, 0, sizeof f);
+  }
+
+  void update (int p, int v) {
+    while (p < N) f[p] += v, p += p & -p;
+  }
+
+  int query (int p) {
+    int res = 0;
+    while (p > 0) res += f[p], p -= p & -p;
+    return res;
+  }
+
+  int query (int l, int r) {
+    return l > r ? 0 : query(r) - query(l - 1);
+  }
+};
