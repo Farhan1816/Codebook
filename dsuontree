@@ -1,0 +1,28 @@
+void dsu(int u, int p, int keep) {
+  for (int v: adj[u]) {
+    if (v == p or v == hc[u])  continue;
+    dsu(v, u, 0);
+  }
+
+  if (hc[u] != -1) {
+    dsu(hc[u], u, 1);
+  }
+
+  for (auto v: adj[u]) {
+    if (v == p or v == hc[u])  continue;
+    for (int i = pos[v]; i < pos[v] + sz[v]; ++i) {
+      int w = euler[i];
+      add(w);
+    }
+  }
+
+  add(u);
+  distinct[u] = cur_distinct;
+
+  if (!keep) {
+    for (int i = pos[u]; i < pos[u] + sz[u]; ++i) {
+      int w = euler[i];
+      remove(w);
+    }
+  }
+}
