@@ -1,0 +1,8 @@
+ll now = 1, ans=0;
+   while(now<=n)
+   {
+      ll now2 = n/(n/now);
+      now2++;
+      ans += (now2-now)*(n/now);
+      now = now2;
+   }
