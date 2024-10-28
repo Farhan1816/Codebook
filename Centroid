@@ -1,0 +1,37 @@
+int get_size(int ind, int par = -1)
+{
+  sz[ind] = 1;
+  for(auto i: adj[ind]){
+    if(i!=par and !is_removed[i])
+    {
+      sz[ind]+=get_size(i, ind);
+    }
+  }
+  return sz[ind];
+}
+
+int get_centroid(int ind, int tot, int par = -1)
+{
+  for(auto i: adj[ind])
+  {
+    if(i!=par and !is_removed[i])
+    { 
+      if(sz[i]*2>tot)
+      {
+        return get_centroid(i, tot, ind);
+      }
+    }
+  }
+  return ind;
+}
+
+void go(int ind = 1, int now = 0)
+{
+  int centroid = get_centroid(ind, get_size(ind));
+  is_removed[centroid] = 1;
+  ans[centroid] = now;
+  for(auto i: adj[centroid])
+  {
+    if(!is_removed[i])go(i, now+1);
+  }
+}
